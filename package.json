@@ -13,7 +13,8 @@
     "lerna": "^3.22.1"
   },
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/react-native", "**/react-native/**"]
+  }
 }
