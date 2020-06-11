@@ -6,6 +6,9 @@
   "repository": "git@github.com:dbartoss/Cards_Against_Humanity..git",
   "author": "dbartoss <dawid.bartosz@miquido.com>",
   "license": "MIT",
+  "scripts": {
+    "start:web-app": "lerna --scope=web-app run start"
+  },
   "devDependencies": {
     "lerna": "^3.22.1"
   },
