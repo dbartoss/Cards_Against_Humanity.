@@ -1,0 +1,16 @@
+{
+  "name": "Cards_Agains_Humanity",
+  "version": "1.0.0",
+  "description": "Monorepo for web, mobile and backend of app",
+  "main": "index.js",
+  "repository": "git@github.com:dbartoss/Cards_Against_Humanity..git",
+  "author": "dbartoss <dawid.bartosz@miquido.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
