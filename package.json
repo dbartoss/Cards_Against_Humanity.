@@ -7,7 +7,14 @@
   "author": "dbartoss <dawid.bartosz@miquido.com>",
   "license": "MIT",
   "scripts": {
-    "start:web-app": "lerna --scope=web-app run start"
+    "start:web-app": "lerna --scope=web-app run start",
+
+    "start:mobile": "lerna --scope=mobile run  start",
+    "start:mobile-ios": "lerna --scope=mobile run ios",
+    "start:mobile-android": "lerna --scope=mobile run android",
+
+    "start:server-dev": "lerna --scope=server run start:dev",
+    "start:server-debug": "lerna --scope=server run start:debug"
   },
   "devDependencies": {
     "lerna": "^3.22.1"
@@ -15,6 +22,17 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"],
-    "nohoist": ["**/react-native", "**/react-native/**"]
+    "nohoist": [
+      "**/react-native",
+      "**/react-native/**",
+      "@nestjs/**",
+      "@angular-devkit/**",
+      "@webassemblyjs/**",
+      "@schematics/**",
+      "@nuxtjs/**",
+      "reflect-metadata",
+      "rimraf",
+      "rxjs"
+    ]
   }
 }
