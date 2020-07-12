@@ -32,7 +32,16 @@
       "@nuxtjs/**",
       "reflect-metadata",
       "rimraf",
-      "rxjs"
+      "rxjs",
+      "mongoose",
+      "bcrypt",
+      "passport**",
+      "helmet",
+      "csurf",
+      "express-rate-limit",
+      "class-validator",
+      "class-transformer",
+      "normalize-mongoose"
     ]
   }
 }
