@@ -24,23 +24,32 @@ export class RoomsService {
       throw new BadRequestException();
     }
 
-    const room = await this.getRoom({ name: roomDTO.name });
+    const { name, userId } = roomDTO;
+
+    const room = await this.getRoom({ name });
 
     if (room) {
       throw new ConflictException();
     }
 
+    const currentPlayerRoom = await this.roomModel.findOne({ players: userId });
+
+    if (currentPlayerRoom) {
+      const players = currentPlayerRoom.players.filter(id => id !== userId);
+      await currentPlayerRoom.updateOne({ players });
+    }
+
     const newRoom = new this.roomModel({
-      name: roomDTO.name,
-      players: [roomDTO.userId],
+      name,
+      players: [userId],
     });
     await newRoom.save();
 
     return newRoom.toJSON();
   }
 
-  async joinToRoom(roomId: string, roomDTO: IRoomJoinDTO): Promise<IRoom> {
-    if (!roomId || !roomDTO?.userId) {
+  async joinToRoom(roomId: string, { userId }: IRoomJoinDTO): Promise<IRoom> {
+    if (!roomId || !userId) {
       throw new BadRequestException();
     }
 
@@ -50,13 +59,20 @@ export class RoomsService {
       throw new NotFoundException('Room with the following id does not exist');
     }
 
-    const user = await this.usersService.findUser({ id: roomDTO.userId });
+    const user = await this.usersService.findUser({ id: userId });
 
     if (!user) {
       throw new NotFoundException('User with the following id does not exist');
     }
 
-    const players = [...new Set([...room.players, roomDTO.userId])];
+    const currentPlayerRoom = await this.roomModel.findOne({ players: userId }).exec();
+
+    if (currentPlayerRoom) {
+      const players =  currentPlayerRoom.players.filter(id => id !== userId);
+      await currentPlayerRoom.updateOne({ players });
+    }
+
+    const players = [...new Set([...room.players, userId])];
     return this.updateRoom(roomId, { players });
   }
 
