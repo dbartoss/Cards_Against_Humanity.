@@ -1,6 +1,6 @@
-import { User } from '../models/user.model';
+import { IUser } from '../models/user.model';
 
-export const sanitizeUser = (user: User): Omit<User, 'password'> => {
+export const sanitizeUser = (user: IUser): Omit<IUser, 'password'> => {
   const { password, ...sanitized } = user.toJSON();
   return sanitized;
 };
