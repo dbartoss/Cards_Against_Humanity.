@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from '../auth/guards';
-import { IRoomCreationDTO } from './models/room.dto';
+import { IRoomCreationDTO, IRoomJoinDTO } from './models/room.dto';
 import { IRoom } from './models/room.model';
 import { RoomsService } from './services/rooms.service';
 
@@ -25,5 +33,14 @@ export class RoomsController {
   @Post()
   async createRoom(@Body() roomDTO: IRoomCreationDTO): Promise<IRoom> {
     return this.roomsService.createRoom(roomDTO);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':roomId')
+  async joinToRoom(
+    @Param('roomId') roomId: string,
+    @Body() roomDTO: IRoomJoinDTO,
+  ): Promise<IRoom> {
+    return this.roomsService.joinToRoom(roomId, roomDTO);
   }
 }
