@@ -7,10 +7,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { LoginDTO, RegisterDTO } from '../models/auth.dto';
-import { AuthModel } from '../models/auth.model';
+import { ILoginDTO, IRegisterDTO } from '../models/auth.dto';
+import { IAuthModel } from '../models/IAuthModel';
 import { sanitizeUser } from '../../users/helpers/sanitize-user';
-import { User } from '../../users/models/user.model';
+import { IUser } from '../../users/models/user.model';
 import { UsersService } from '../../users/services';
 
 @Injectable()
@@ -24,13 +24,13 @@ export class AuthService {
    * Gets the user by params and compares passwords
    * @param {string} username
    * @param {string} password
-   * @return {Promise<Omit<User, "password">>}
+   * @return {Promise<Omit<IUser, "password">>}
    */
   async validateUser(
     username: string,
     password: string,
-  ): Promise<Omit<User, 'password'>> {
-    const user = (await this.usersService.findUser({ username })) as User;
+  ): Promise<Omit<IUser, 'password'>> {
+    const user = (await this.usersService.findUser({ username })) as IUser;
 
     if (!user) {
       throw new NotFoundException();
@@ -46,10 +46,10 @@ export class AuthService {
   /**
    * Gets the user by params and creates a new one
    * if there's no user with the same username already
-   * @param {RegisterDTO} registerDTO
-   * @return {Promise<Omit<User, "password">>}
+   * @param {IRegisterDTO} registerDTO
+   * @return {Promise<Omit<IUser, "password">>}
    */
-  async register(registerDTO: RegisterDTO): Promise<Omit<User, 'password'>> {
+  async register(registerDTO: IRegisterDTO): Promise<Omit<IUser, 'password'>> {
     const user = await this.usersService.findUser({
       username: registerDTO.username,
     });
@@ -63,10 +63,10 @@ export class AuthService {
 
   /**
    * Validates the user login credentials and returns token with user data
-   * @param {LoginDTO} loginDTO
-   * @return {Promise<AuthModel>}
+   * @param {ILoginDTO} loginDTO
+   * @return {Promise<IAuthModel>}
    */
-  async login(loginDTO: LoginDTO): Promise<AuthModel> {
+  async login(loginDTO: ILoginDTO): Promise<IAuthModel> {
     const user = await this.validateUser(loginDTO.username, loginDTO.password);
     return { token: await this.jwtService.signAsync(user), user };
   }
