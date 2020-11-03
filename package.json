@@ -4,7 +4,7 @@
   "description": "Monorepo for web, mobile and backend of app",
   "main": "index.js",
   "repository": "git@github.com:dbartoss/Cards_Against_Humanity..git",
-  "author": "dbartoss <dawid.bartosz@miquido.com>",
+  "author": "dbartoss <contact@dbartosz.com>",
   "license": "MIT",
   "scripts": {
     "start:web-app": "lerna --scope=web-app run start",
@@ -41,7 +41,20 @@
       "express-rate-limit",
       "class-validator",
       "class-transformer",
-      "normalize-mongoose"
+      "normalize-mongoose",
+      "@material-ui/core",
+      "@testing-library/jest-dom",
+      "@testing-library/react",
+      "@testing-library/user-event",
+      "@types/jest",
+      "@types/react",
+      "@types/react-dom",
+      "@types/redux-actions",
+      "axios",
+      "react**",
+      "redux**",
+      "typescript",
+      "prettier"
     ]
   }
 }
