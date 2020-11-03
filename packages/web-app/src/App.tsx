@@ -1,24 +1,13 @@
 import * as React from 'react';
-import './App.css';
+import { Container, ThemeProvider } from '@material-ui/core';
+import { muiTheme, RoutesConfig } from './config';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const App = () => {
+    return (
+        <ThemeProvider theme={muiTheme}>
+            <Container>
+                <RoutesConfig/>
+            </Container>
+        </ThemeProvider>
+    );
 }
-
-export default App;
