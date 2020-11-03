@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -58,5 +58,19 @@ export class UsersService {
       .exec();
 
     return sanitize && user ? sanitizeUser(user) : user;
+  }
+
+  async findUserIdByItsToken(token: string): Promise<string> {
+    if (!token) {
+      throw new BadRequestException('Token cannot be nullish');
+    }
+
+    const user = await this.userModel
+      .findOne({ token })
+      .exec();
+
+    console.log(user);
+
+    return user.id;
   }
 }

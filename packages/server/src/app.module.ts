@@ -6,11 +6,15 @@ import { RoomsModule } from './rooms/rooms.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`mongodb://${process.env.DB_HOST || 'localhost'}/${process.env.DB_NAME || 'wsei'}`, {
-      useFindAndModify: false,
-      useNewUrlParser: true,
-      useCreateIndex: true,
-    }),
+    MongooseModule.forRoot(
+      `mongodb://${process.env.DB_HOST || 'localhost'}/${process.env.DB_NAME ||
+        'cards-against-humanity'}`,
+      {
+        useFindAndModify: false,
+        useNewUrlParser: true,
+        useCreateIndex: true,
+      },
+    ),
     AuthModule,
     RoomsModule,
   ],

@@ -1,1 +1,1 @@
-export const getIdParam = (id = undefined) => (id ? { _id: id } : {});
+export const getIdParam = (id: string = undefined) => (id ? { _id: id } : {});
