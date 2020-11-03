@@ -72,7 +72,7 @@ export class RoomsController {
   @Post('/startGame/:roomId/:userId')
   async startGame(
     @Param('roomId') roomId: string,
-    @Param('roomId') userId: string,
+    @Param('userId') userId: string,
   ): Promise<IRoom> {
     return this.roomsService.startGame(roomId, userId);
   }

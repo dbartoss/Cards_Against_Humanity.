@@ -113,27 +113,31 @@ export class RoomsService {
       throw new BadRequestException();
     }
 
-    console.log(roomId, userId);
-
-    const room = await this.getRoom({ id: roomId });
-
-    console.log(room);
+    let room = await this.getRoom({ id: roomId });
 
     if (!room) {
       throw new NotFoundException('Could not find any room with this user');
     }
 
-    const players = room.players.map((player: IPlayerSchema) => {
-      if (player.userId === userId) {
-        console.log('XDD');
-      }
-      return player.userId === userId
-        ? { ...player, ableToStartGame: true }
-        : player;
-    });
+    const playerIndex = room.players.findIndex(
+      (player: IPlayerSchema) => player.userId === userId,
+    );
 
-    await room.updateOne({ players });
+    if (playerIndex < 0) {
+      throw new NotFoundException('Could not find the user at this room');
+    }
 
+    room.players[playerIndex].ableToStartGame = true;
+
+    const doesAllPlayersAllowToStart: boolean = room.players.every(
+      (player: IPlayerSchema) => player.ableToStartGame,
+    );
+
+    if (doesAllPlayersAllowToStart) {
+      room = await this.setupRound(room);
+    }
+
+    await room.save();
     return room.toJSON();
   }
 
@@ -191,43 +195,32 @@ export class RoomsService {
 
     const { userId, victorId } = roomDTO;
 
-    const room = await this.getRoom({ id: roomId });
+    const room = await this.getRoom({ id: roomId }, '');
 
     if (!room) {
       throw new NotFoundException('Room with the following id does not exist');
     }
 
     const currentRound = room.currentRound;
+
     if (currentRound?.selector !== userId) {
       throw new BadRequestException();
     }
 
-    const players: IPlayerSchema[] = room.players.map(
-      ({ userId, currentPoints: points, ...player }: IPlayerSchema) => {
-        const currentPoints = userId === victorId ? points + 1 : points;
-        return { userId, currentPoints, ...player };
-      },
+    const playerIndex = room.players.findIndex(
+      (player: IPlayerSchema) => player.userId === victorId,
     );
 
-    const playersIds: string[] = room.players.map(
-      (player: IPlayerSchema) => player.userId,
-    );
+    if (playerIndex < 0) {
+      throw new NotFoundException('Could not find the victorious player');
+    }
 
-    const newCard = await this.cardsService.drawCards({ number: 1 }, 'black');
-    const selector = RoomsService.getNewSelector(playersIds);
+    room.players[playerIndex].currentPoints++;
 
-    const { text: mainCardText, fillSpaces: mainCardGaps } = newCard[0];
+    const newRoomValues = await this.setupRound(room);
+    await newRoomValues.save();
 
-    const newRound: RoundSchema = {
-      selector,
-      mainCardText,
-      mainCardGaps,
-      currentlySelectedCards: [],
-    };
-
-    await room.updateOne({ players, currentRound: newRound });
-
-    return room.toJSON();
+    return newRoomValues.toJSON();
   }
 
   private async getRoom(
@@ -249,6 +242,25 @@ export class RoomsService {
       { ...updateValues },
     );
     return this.getRoom({ id: roomId });
+  }
+
+  private async setupRound(room: IRoom): Promise<IRoom> {
+    const playersIds = room.players.map(
+      (player: IPlayerSchema) => player.userId,
+    );
+    const newCard = await this.cardsService.drawCards({ number: 1 }, 'black');
+    const selector = RoomsService.getNewSelector(playersIds);
+
+    const { text: mainCardText, fillSpaces: mainCardGaps } = newCard[0];
+
+    room.currentRound = {
+      selector,
+      mainCardText,
+      mainCardGaps,
+      currentlySelectedCards: [],
+    };
+
+    return room;
   }
 
   private static prepareParams(params): Partial<IRoom> {

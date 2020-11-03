@@ -20,7 +20,7 @@ const roundSchema = new mongoose.Schema({
 });
 
 const schema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, unique: true, required: true },
   players: { type: [playerSchema], required: true, default: [] },
   createdAt: { type: Date, default: Date.now },
   currentRound: {
