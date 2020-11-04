@@ -5,11 +5,11 @@ import { TextField } from 'formik-material-ui';
 import { Form, Formik, Field } from 'formik';
 
 import './style.css';
-import { LoginForm } from '../../models/auth.models';
+import { LoginForm } from '../../models/auth.model';
 import { loginUser } from '../../store/middlewares/auth.thunks';
 import { tokenSelector } from '../../store/selectors/auth.selectors';
 
-const LOGIN_FORM_INITIAL_VALUES: Readonly<LoginForm> = Object.freeze({ email: '', password: '' });
+const LOGIN_FORM_INITIAL_VALUES: Readonly<LoginForm> = Object.freeze({ username: '', password: '' });
 
 const MainPage = (props) => {
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const MainPage = (props) => {
                 <Formik initialValues={LOGIN_FORM_INITIAL_VALUES} onSubmit={submitFn}>
                     {({ submitForm, isSubmitting }) => (
                         <Form className="form">
-                            <Field className="margin-bottom" component={TextField} name="email" type="email" label="E-mail"/>
+                            <Field className="margin-bottom" component={TextField} name="username" type="text" label="Username"/>
                             <Field className="margin-bottom" component={TextField} name="password" type="password" label="Password"/>
                             <Button
                                 variant="contained"
