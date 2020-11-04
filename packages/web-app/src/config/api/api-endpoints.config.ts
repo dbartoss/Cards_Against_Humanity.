@@ -9,7 +9,7 @@ export const API_ENDPOINTS_CONFIG = {
     },
     ROOMS_ROUTES: {
         ROOMS: '/rooms',
-        ROOM_BY_ID: '/rooms/${roomId}',
+        ROOM_BY_ID: '/rooms/:roomId',
         UPDATE_CHOICE: '/rooms/updateChoice/:roomId',
         FINISH_ROUND: '/rooms/finishRound/:roomId',
         START_GAME: '/rooms/startGame/:roomId/:userId'
