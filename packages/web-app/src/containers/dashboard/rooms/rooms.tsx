@@ -72,7 +72,7 @@ const RoomListItem: React.FC<RoomModel & { userId: string | null, classes: Recor
 
     const handleRedirect = async () => dispatch(joinToRoom(id, userId, history.push));
 
-    const doesGameStarted: boolean = players.every(player => player?.ableToStartGame);
+    const doesGameStarted: boolean = players.length > 0 && players.every(player => !!player?.ableToStartGame);
 
     const roomIcon: JSX.Element = doesGameStarted ?
         <NoMeetingRoomIcon className={classes.iconMarginRight} /> :
@@ -90,7 +90,7 @@ const RoomListItem: React.FC<RoomModel & { userId: string | null, classes: Recor
                     <span className={classes.valuePlayers}>{players.length}</span>
                 </div>
             </div>
-            <Button color="secondary" variant="outlined" onClick={handleRedirect}>Join the room</Button>
+            {!doesGameStarted ? <Button color="secondary" variant="text" onClick={handleRedirect}>Join the room</Button> : null}
         </ListItem>
     );
 };

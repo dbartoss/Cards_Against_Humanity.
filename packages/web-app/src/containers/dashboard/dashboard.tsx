@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, NavLink, Route } from 'react-router-dom';
+import { useHistory, NavLink, Route, Switch } from 'react-router-dom';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import {
     CssBaseline,
@@ -21,6 +21,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
 import './style.css';
+import CreateRoom from './create-room';
 import Home from './home';
 import Room from './room';
 import Rooms from './rooms';
@@ -131,13 +132,16 @@ const Dashboard: React.FC = (props) => {
                 </Drawer>
                 <main className={classes.content}>
                     <Toolbar />
-                    <Route exact path="/dashboard" component={Home} />
-                    <Route path="/dashboard/rooms/:roomId" component={Room} />
-                    <Route exact path="/dashboard/rooms" component={Rooms} />
+                    <Switch>
+                        <Route exact path="/dashboard" component={Home} />
+                        <Route exact path="/dashboard/rooms/create" component={CreateRoom} />
+                        <Route path="/dashboard/rooms/:roomId" component={Room} />
+                        <Route exact path="/dashboard/rooms" component={Rooms} />
+                    </Switch>
                 </main>
             </div>
         </Fade>
     );
-}
+};
 
 export default Dashboard;

@@ -9,5 +9,9 @@ export const roomsItemsSelector = (state: RootState): RoomModel[] => roomsSelect
 
 export const openRoomsSelector = (state: RootState): RoomModel[] =>
     roomsItemsSelector(state).filter((room: RoomModel) =>
-        room.players.some((player: PlayerModel) => !player?.ableToStartGame
+       !room.players.length || room.players.some((player: PlayerModel) => !player?.ableToStartGame
     ));
+
+export const currentRoom = (userId: string | null) => (state: RootState): RoomModel | null =>
+    roomsItemsSelector(state).find((room: RoomModel) =>
+        room.players.some((player: PlayerModel) => player.userId === userId)) ?? null;
