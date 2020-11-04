@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, NavLink } from 'react-router-dom';
+import { useHistory, NavLink, Route } from 'react-router-dom';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import {
     CssBaseline,
@@ -12,7 +12,6 @@ import {
     ListItem,
     ListItemText,
     Theme,
-    Paper,
     Button,
     Zoom,
     Fade,
@@ -22,6 +21,9 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
 import './style.css';
+import Home from './home';
+import Room from './room';
+import Rooms from './rooms';
 import { logout } from '../../store/middlewares/auth.thunks';
 
 const drawerWidth = 240;
@@ -68,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
@@ -79,59 +81,61 @@ const Dashboard: React.FC = () => {
 
     return (
         <Fade in={true} timeout={340}>
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Cards Against Humanity
-                    </Typography>
-                    <span className={classes.divider} />
-                    <Button variant="contained" color="secondary" onClick={handleLogout}>Log out</Button>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <Toolbar />
-                <div className={classes.drawerContainer}>
-                    <List>
-                        <NavLink exact to={'/dashboard'} className={classes.navLink} activeClassName={classes.activeNavLink}>
-                            <Zoom in={true} timeout={600} style={{ transitionDelay: '200ms'}}>
-                                <ListItem button>
-                                    <HomeIcon className={classes.icon}/>
-                                    <ListItemText primary="Home" />
-                                </ListItem>
-                            </Zoom>
-                        </NavLink>
-                        <NavLink to={'/dashboard/rooms'} className={classes.navLink} activeClassName={classes.activeNavLink}>
-                            <Zoom in={true} timeout={300} style={{ transitionDelay: '400ms'}}>
-                                <ListItem button>
-                                    <MeetingRoomIcon className={classes.icon}/>
-                                    <ListItemText primary="Rooms" />
-                                </ListItem>
-                            </Zoom>
-                        </NavLink>
-                        <NavLink to={'/dashboard/user'} className={classes.navLink} activeClassName={classes.activeNavLink}>
-                            <Zoom in={true} timeout={300} style={{ transitionDelay: '600ms'}}>
-                                <ListItem button>
-                                    <AccountBoxIcon className={classes.icon}/>
-                                    <ListItemText primary="User" />
-                                </ListItem>
-                            </Zoom>
-                        </NavLink>
-                    </List>
-                </div>
-            </Drawer>
-            <main className={classes.content}>
-                <Toolbar />
-               <Paper className={classes.paper}>Test</Paper>
-            </main>
-        </div>
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar position="fixed" className={classes.appBar}>
+                    <Toolbar>
+                        <Typography variant="h6" noWrap>
+                            Cards Against Humanity
+                        </Typography>
+                        <span className={classes.divider} />
+                        <Button variant="contained" color="secondary" onClick={handleLogout}>Log out</Button>
+                    </Toolbar>
+                </AppBar>
+                <Drawer
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <Toolbar />
+                    <div className={classes.drawerContainer}>
+                        <List>
+                            <NavLink exact to="/dashboard" className={classes.navLink} activeClassName={classes.activeNavLink}>
+                                <Zoom in={true} timeout={600} style={{ transitionDelay: '200ms'}}>
+                                    <ListItem button>
+                                        <HomeIcon className={classes.icon}/>
+                                        <ListItemText primary="Home" />
+                                    </ListItem>
+                                </Zoom>
+                            </NavLink>
+                            <NavLink to="/dashboard/rooms" className={classes.navLink} activeClassName={classes.activeNavLink}>
+                                <Zoom in={true} timeout={300} style={{ transitionDelay: '400ms'}}>
+                                    <ListItem button>
+                                        <MeetingRoomIcon className={classes.icon}/>
+                                        <ListItemText primary="Rooms" />
+                                    </ListItem>
+                                </Zoom>
+                            </NavLink>
+                            <NavLink to="/dashboard/user" className={classes.navLink} activeClassName={classes.activeNavLink}>
+                                <Zoom in={true} timeout={300} style={{ transitionDelay: '600ms'}}>
+                                    <ListItem button>
+                                        <AccountBoxIcon className={classes.icon}/>
+                                        <ListItemText primary="User" />
+                                    </ListItem>
+                                </Zoom>
+                            </NavLink>
+                        </List>
+                    </div>
+                </Drawer>
+                <main className={classes.content}>
+                    <Toolbar />
+                    <Route exact path="/dashboard" component={Home} />
+                    <Route path="/dashboard/rooms/:roomId" component={Room} />
+                    <Route exact path="/dashboard/rooms" component={Rooms} />
+                </main>
+            </div>
         </Fade>
     );
 }
