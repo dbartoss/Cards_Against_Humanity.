@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Paper, makeStyles, createStyles, Theme, Zoom, Link, Typography } from '@material-ui/core';
-
-
-import { openRoomsSelector, roomsSelector } from '../../../store/selectors/rooms.selectors';
-
+import { fetchRooms } from '../../../store/middlewares/rooms.thunks';
+import { openRoomsSelector } from '../../../store/selectors/rooms.selectors';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -19,8 +17,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Home: React.FC = (props) => {
-    const classes = useStyles();
     const openRooms = useSelector(openRoomsSelector);
+    const dispatch = useDispatch();
+    const classes = useStyles();
+
+    React.useEffect(() => {
+        dispatch(fetchRooms());
+    }, [dispatch]);
 
     return (
         <React.Fragment>
