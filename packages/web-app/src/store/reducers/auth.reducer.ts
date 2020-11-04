@@ -12,7 +12,7 @@ const initialState: AuthState = {
 
 export const authReducer = handleActions<AuthState, AuthState>(
     {
-        [Type.SIGN_IN]: (state, action) => {
+        [Type.SIGN_IN_SUCCESS]: (state, action) => {
             if (action?.payload?.token) {
                 return { ...state, token: action.payload.token };
             }
