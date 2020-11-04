@@ -2,7 +2,7 @@ import { setAuthToken } from '../../helpers/request.helper';
 import { AppThunk } from '../../models/app-thunk.model';
 import { LoginForm } from '../../models/auth.model';
 import { logInUserService } from '../../services/auth/login.service';
-import { signInUser, signInUserError, signInUserSuccess } from '../actions/auth.actions';
+import { logoutUser, logoutUserError, logoutUserSuccess, signInUser, signInUserError, signInUserSuccess } from '../actions/auth.actions';
 
 
 export const loginUser = (loginFormValues: LoginForm, redirectTo: Function): AppThunk => async dispatch => {
@@ -21,5 +21,16 @@ export const loginUser = (loginFormValues: LoginForm, redirectTo: Function): App
         redirectTo('/dashboard');
     } catch (error) {
         dispatch(signInUserError());
+    }
+};
+
+export const logout = (redirectTo: Function): AppThunk => async dispatch => {
+    try{
+        await dispatch(logoutUser());
+        await dispatch(logoutUserSuccess());
+        redirectTo('/login');
+    }  catch (error) {
+        console.error(error);
+        dispatch(logoutUserError());
     }
 };
