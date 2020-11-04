@@ -1,7 +1,5 @@
-export interface AuthModel {
-    token: string | null;
-}
 
-export namespace AuthModel {
-
+export interface LoginForm {
+    email: string;
+    password: string;
 }

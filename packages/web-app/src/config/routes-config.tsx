@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { MainPage } from '../containers/main-page';
+import MainPage from '../containers/main-page';
 
 interface IRoute {
     path: string;
