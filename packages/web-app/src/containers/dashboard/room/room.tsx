@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Paper, makeStyles, createStyles, Theme, Typography, CircularProgress, Button } from '@material-ui/core';
-import { PlayerModel } from '../../../models/player.model';
 
+import { PlayerModel } from '../../../models/player.model';
 import { RoomModel } from '../../../models/room.model';
 import { allowToStartGameService } from '../../../services/rooms/allow-to-start-game.service';
 import { fetchRooms } from '../../../store/middlewares/rooms.thunks';
 import { canRoomStartGame, currentRoom } from '../../../store/selectors/rooms.selectors';
 import { userIdSelector } from '../../../store/selectors/user.selectors';
+import DrawingCards from './drawing-cards';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,7 +45,6 @@ const WaitingForOtherPlayers: React.FC<{ classes: Record<string, any> }> = ({ cl
 const Room: React.FC = (props) => {
     const { roomId } = useParams();
     const classes = useStyles();
-    const history = useHistory();
     const dispatch = useDispatch();
     const [isAllowingToStart, setIsAllowingToStart] = React.useState(false);
 
@@ -87,7 +87,7 @@ const Room: React.FC = (props) => {
     return (
         <Paper className={classes.paper}>
             <Typography variant="h6">{activeRoom.name}</Typography>
-            {isGameStarted ? 'TODO!!!!' : pendingStatus()}
+            {isGameStarted ? <DrawingCards userId={userId} activeRoom={activeRoom} playerData={playerData} /> : pendingStatus()}
             {isGameStarted ? null : `Allowed to start: ${playersAllowedToStart}/${activeRoom.players.length}`}
         </Paper>
     );
