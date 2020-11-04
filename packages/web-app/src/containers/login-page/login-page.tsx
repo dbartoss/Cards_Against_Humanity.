@@ -25,10 +25,9 @@ const LoginPage = (props) => {
     //     setOpen(false);
     // };
 
-    const submitFn = async (values: LoginForm, { setSubmitting }): Promise<void>  => {
+    const submitFn = async (values: LoginForm): Promise<void>  => {
         await dispatch(loginUser(values, history.push));
         // await setOpen(true);  TODO: When material-ui team will fix issues of the MuiAlert cause it breaks the app at strict mode
-        setSubmitting(false);
     };
 
     return (
