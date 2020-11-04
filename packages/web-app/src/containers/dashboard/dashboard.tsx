@@ -97,7 +97,7 @@ const Dashboard: React.FC = () => {
                 <Toolbar />
                 <div className={classes.drawerContainer}>
                     <List>
-                        <NavLink to={'/dashboard'} className={classes.navLink} activeClassName={classes.activeNavLink}>
+                        <NavLink exact to={'/dashboard'} className={classes.navLink} activeClassName={classes.activeNavLink}>
                             <ListItem button>
                                 <HomeIcon className={classes.icon}/>
                                 <ListItemText primary="Home" />
