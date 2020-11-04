@@ -1,7 +1,17 @@
 import { AppThunk } from '../../models/app-thunk.model';
+import { createNewRoomService } from '../../services/rooms/create-new-room.service';
 import { getRoomsService } from '../../services/rooms/get-rooms.service';
 import { requestJoiningRoomService } from '../../services/rooms/request-room-joining.service';
-import { getRooms, getRoomsError, getRoomsSuccess, joinRoom, joinRoomError, joinRoomSuccess } from '../actions/rooms.actions';
+import {
+    createRoom,
+    createRoomError, createRoomSuccess,
+    getRooms,
+    getRoomsError,
+    getRoomsSuccess,
+    joinRoom,
+    joinRoomError,
+    joinRoomSuccess,
+} from '../actions/rooms.actions';
 
 
 export const fetchRooms = (): AppThunk => async dispatch => {
@@ -40,4 +50,28 @@ export const joinToRoom = (roomId: string, userId: string | null, redirectTo: Fu
     } catch (error) {
         dispatch(joinRoomError());
     }
+};
+
+export const createNewRoom = (roomName: string, userId: string | null, redirectTo: Function): AppThunk => async dispatch => {
+  try {
+      if (!userId) {
+          console.error(userId);
+          return;
+      }
+
+      await dispatch(createRoom());
+
+      const res = await createNewRoomService({ name: roomName, userId });
+
+      if (!res?.data) {
+          return dispatch(createRoomError());
+      }
+
+      const { id } = res.data;
+
+      await dispatch(createRoomSuccess());
+      redirectTo(`./${id}`);
+  }  catch (error) {
+      dispatch(createRoomError())
+  }
 };
