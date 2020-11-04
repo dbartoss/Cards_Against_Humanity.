@@ -9,6 +9,6 @@ import RouteWithSubRoutes from './route-with-sub-routes';
 const ProtectedRoute = (props: IRoute): JSX.Element => {
     const isAuthenticated = !!useSelector(tokenSelector);
     return isAuthenticated ? <RouteWithSubRoutes {...props} /> : <Redirect to={{ pathname: '/login' }}/>;
-}
+};
 
 export default ProtectedRoute;
