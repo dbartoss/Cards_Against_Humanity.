@@ -18,12 +18,12 @@ export const signInUser = createAction(Type.SIGN_IN);
 export const signUpUser = createAction(Type.SIGN_UP);
 export const logoutUser = createAction(Type.LOGOUT);
 
-const actions: ActionFunctionAny<Action<any>>[] = [
+const actions = {
     signInUser,
     signUpUser,
     logoutUser,
-];
+};
 
-export const useAuthActions = (dispatch: Dispatch) => {
+export const useAuthActions = (dispatch: Dispatch): typeof actions => {
     return useMemo(() => bindActionCreators(actions as any, dispatch), [dispatch]);
 };
