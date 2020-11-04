@@ -1,14 +1,13 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
-import green from '@material-ui/core/colors/green';
+import { grey, lime } from '@material-ui/core/colors';
 
 export const muiThemeConfig = createMuiTheme({
     palette: {
         primary: {
-            main: purple[500],
+            main: grey[900],
         },
         secondary: {
-            main: green[500],
+            main: lime[400],
         },
     },
 });
