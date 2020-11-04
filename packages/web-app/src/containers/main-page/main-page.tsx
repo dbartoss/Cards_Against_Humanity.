@@ -1,28 +1,35 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Button, Paper, Typography } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
 import { TextField } from 'formik-material-ui';
 import { Form, Formik, Field } from 'formik';
 
 import './style.css';
 import { LoginForm } from '../../models/auth.model';
 import { loginUser } from '../../store/middlewares/auth.thunks';
-import { tokenSelector } from '../../store/selectors/auth.selectors';
 
 const LOGIN_FORM_INITIAL_VALUES: Readonly<LoginForm> = Object.freeze({ username: '', password: '' });
 
 const MainPage = (props) => {
     const dispatch = useDispatch();
+    const history = useHistory();
 
-    const submitFn = (values: LoginForm, { setSubmitting })  => {
-        console.log(values);
-        dispatch(loginUser(values));
-        setTimeout(() => setSubmitting(false), 1000);
+    // TODO: When material-ui team will fix issues of the MuiAlert cause it breaks the app at strict mode
+    // const [open, setOpen] = React.useState(false);
+    // const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //
+    //     setOpen(false);
+    // };
+
+    const submitFn = async (values: LoginForm, { setSubmitting }): Promise<void>  => {
+        await dispatch(loginUser(values, history.push));
+        // await setOpen(true);  TODO: When material-ui team will fix issues of the MuiAlert cause it breaks the app at strict mode
+        setSubmitting(false);
     };
-
-    const auth = useSelector(tokenSelector);
-
-    console.log(auth);
 
     return (
         <div className="container">
@@ -45,6 +52,10 @@ const MainPage = (props) => {
                     )}
                 </Formik>
             </Paper>
+            {/* TODO: When material-ui team will fix issues of the MuiAlert cause it breaks the app at strict mode */}
+            {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>*/}
+            {/*    <Alert severity="error">Cannot log in.</Alert>*/}
+            {/*</Snackbar>*/}
         </div>
     );
 };

@@ -5,21 +5,21 @@ import { logInUserService } from '../../services/auth/login.service';
 import { signInUser, signInUserError, signInUserSuccess } from '../actions/auth.actions';
 
 
-export const loginUser = (loginFormValues: LoginForm): AppThunk => async dispatch => {
+export const loginUser = (loginFormValues: LoginForm, redirectTo: Function): AppThunk => async dispatch => {
     try {
-        dispatch(signInUser());
-        const { data } = await logInUserService(loginFormValues);
+        await dispatch(signInUser());
+        const res = await logInUserService(loginFormValues);
 
-        if (!data?.token) {
-            new Error('Missing token');
+        if (!res) {
+            return dispatch(signInUserError());
         }
 
-        const { token } = data;
+        const { token } = res.data;
 
         setAuthToken(token);
-        dispatch(signInUserSuccess({ token }));
+        await dispatch(signInUserSuccess({ token }));
+        redirectTo('/dashboard');
     } catch (error) {
         dispatch(signInUserError());
-        throw error;
     }
 };
