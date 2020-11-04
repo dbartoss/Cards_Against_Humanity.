@@ -1,39 +1,34 @@
 import * as React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import MainPage from '../../containers/main-page';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
-interface IRoute {
-    path: string;
-    component: any;
-    routes?: IRoute[];
-}
+import { ProtectedRoute, RouteWithSubRoutes } from './route-components';
+import { IRoute } from '../../models/route.model';
+import MainPage from '../../containers/main-page';
+import Dashboard from '../../containers/dashboard';
 
 const routes: IRoute[] = [
     {
-        path: '/',
+        path: '/login',
         component: MainPage
     },
+    {
+        path: '/dashboard',
+        component: Dashboard,
+        isProtected: true,
+    }
 ];
 
-const RouteWithSubRoutes = (route: IRoute) => {
-    return (
-        <Route
-            path={route.path}
-            render={props => (<route.component {...props} routes={route.routes} />)}
-        />
-    );
-}
+const config = routes.map((route: IRoute, index: number) =>
+    route?.isProtected ? <ProtectedRoute key={index} {...route} /> : <RouteWithSubRoutes key={index} {...route} />
+);
 
 export const RoutesConfig = () => {
-
-    const config = routes.map((route: IRoute, index: number) => (
-        <RouteWithSubRoutes key={index} {...route} />
-    ));
 
     return (
         <BrowserRouter>
             <Switch>
                 {config}
+                <Route path={'/'} render={() => <Redirect to={{ pathname: '/login' }} />}/>
             </Switch>
         </BrowserRouter>
     );
