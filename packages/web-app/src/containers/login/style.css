@@ -5,6 +5,7 @@
     flex-direction: column;
     height: 100vh;
     width: 100vw;
+    background-color: #303030;
 }
 
 .paper {
@@ -22,4 +23,8 @@
 
 .margin-bottom {
     margin-bottom: 16px !important;
+}
+
+.btn-submit {
+    margin-top: 8px;
 }
