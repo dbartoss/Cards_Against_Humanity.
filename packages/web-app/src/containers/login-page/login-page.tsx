@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, Paper, Typography, Container } from '@material-ui/core';
+import { Button, Paper, Typography, Fade } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { Form, Formik, Field } from 'formik';
 
@@ -32,32 +32,34 @@ const LoginPage = (props) => {
     };
 
     return (
-        <div className="container">
-            <Typography variant="h5" color="textPrimary">Sign in</Typography>
-            <Paper elevation={1} className="paper">
-                <Formik initialValues={LOGIN_FORM_INITIAL_VALUES} onSubmit={submitFn}>
-                    {({ submitForm, isSubmitting }) => (
-                        <Form className="form">
-                            <Field className="margin-bottom" component={TextField} name="username" type="text" label="Username"/>
-                            <Field className="margin-bottom" component={TextField} name="password" type="password" label="Password"/>
-                            <Button
-                                className="btn-submit"
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                disabled={isSubmitting}
-                                onClick={submitForm}>
-                                Submit
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
-            </Paper>
-            {/* TODO: When material-ui team will fix issues of the MuiAlert cause it breaks the app at strict mode */}
-            {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>*/}
-            {/*    <Alert severity="error">Cannot log in.</Alert>*/}
-            {/*</Snackbar>*/}
-        </div>
+        <Fade in={true} timeout={650}>
+            <div className="container">
+                <Typography variant="h5" color="textPrimary">Sign in</Typography>
+                <Paper elevation={1} className="paper">
+                    <Formik initialValues={LOGIN_FORM_INITIAL_VALUES} onSubmit={submitFn}>
+                        {({ submitForm, isSubmitting }) => (
+                            <Form className="form">
+                                <Field className="margin-bottom" component={TextField} name="username" type="text" label="Username"/>
+                                <Field className="margin-bottom" component={TextField} name="password" type="password" label="Password"/>
+                                <Button
+                                    className="btn-submit"
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    onClick={submitForm}>
+                                    Submit
+                                </Button>
+                            </Form>
+                        )}
+                    </Formik>
+                </Paper>
+                {/* TODO: When material-ui team will fix issues of the MuiAlert cause it breaks the app at strict mode */}
+                {/*<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>*/}
+                {/*    <Alert severity="error">Cannot log in.</Alert>*/}
+                {/*</Snackbar>*/}
+            </div>
+        </Fade>
     );
 };
 

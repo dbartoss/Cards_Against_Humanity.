@@ -13,7 +13,9 @@ import {
     ListItemText,
     Theme,
     Paper,
-    Button
+    Button,
+    Zoom,
+    Fade,
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
@@ -76,6 +78,7 @@ const Dashboard: React.FC = () => {
     };
 
     return (
+        <Fade in={true} timeout={340}>
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
@@ -98,22 +101,28 @@ const Dashboard: React.FC = () => {
                 <div className={classes.drawerContainer}>
                     <List>
                         <NavLink exact to={'/dashboard'} className={classes.navLink} activeClassName={classes.activeNavLink}>
-                            <ListItem button>
-                                <HomeIcon className={classes.icon}/>
-                                <ListItemText primary="Home" />
-                            </ListItem>
+                            <Zoom in={true} timeout={600} style={{ transitionDelay: '200ms'}}>
+                                <ListItem button>
+                                    <HomeIcon className={classes.icon}/>
+                                    <ListItemText primary="Home" />
+                                </ListItem>
+                            </Zoom>
                         </NavLink>
                         <NavLink to={'/dashboard/rooms'} className={classes.navLink} activeClassName={classes.activeNavLink}>
+                            <Zoom in={true} timeout={300} style={{ transitionDelay: '400ms'}}>
                                 <ListItem button>
-                                <MeetingRoomIcon className={classes.icon}/>
-                                <ListItemText primary="Rooms" />
-                            </ListItem>
+                                    <MeetingRoomIcon className={classes.icon}/>
+                                    <ListItemText primary="Rooms" />
+                                </ListItem>
+                            </Zoom>
                         </NavLink>
                         <NavLink to={'/dashboard/user'} className={classes.navLink} activeClassName={classes.activeNavLink}>
-                            <ListItem button>
-                                <AccountBoxIcon className={classes.icon}/>
-                                <ListItemText primary="User" />
-                            </ListItem>
+                            <Zoom in={true} timeout={300} style={{ transitionDelay: '600ms'}}>
+                                <ListItem button>
+                                    <AccountBoxIcon className={classes.icon}/>
+                                    <ListItemText primary="User" />
+                                </ListItem>
+                            </Zoom>
                         </NavLink>
                     </List>
                 </div>
@@ -123,6 +132,7 @@ const Dashboard: React.FC = () => {
                <Paper className={classes.paper}>Test</Paper>
             </main>
         </div>
+        </Fade>
     );
 }
 
