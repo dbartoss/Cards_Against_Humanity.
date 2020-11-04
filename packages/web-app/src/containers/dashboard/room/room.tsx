@@ -5,6 +5,7 @@ import { Paper, makeStyles, createStyles, Theme, Typography, CircularProgress, B
 import { PlayerModel } from '../../../models/player.model';
 
 import { RoomModel } from '../../../models/room.model';
+import { allowToStartGameService } from '../../../services/rooms/allow-to-start-game.service';
 import { fetchRooms } from '../../../store/middlewares/rooms.thunks';
 import { canRoomStartGame, currentRoom } from '../../../store/selectors/rooms.selectors';
 import { userIdSelector } from '../../../store/selectors/user.selectors';
@@ -12,7 +13,11 @@ import { userIdSelector } from '../../../store/selectors/user.selectors';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         paper: {
-          padding: 24,
+            padding: 24,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
         },
         container: {
             display: 'flex',
@@ -25,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         progress: {
             marginBottom: 16,
-        }
+        },
     })
 );
 
@@ -41,6 +46,7 @@ const Room: React.FC = (props) => {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
+    const [isAllowingToStart, setIsAllowingToStart] = React.useState(false);
 
     const userId: string | null = useSelector(userIdSelector);
     const activeRoom: RoomModel = useSelector(currentRoom(userId));
@@ -53,7 +59,19 @@ const Room: React.FC = (props) => {
 
     const pendingStatus = (): JSX.Element => doesUserAllowedToStartGame ?
         <WaitingForOtherPlayers classes={classes} /> :
-        <Button>Start Game</Button>;
+        <div className={classes.container}>
+            <Button
+                disabled={isAllowingToStart}
+                onClick={async () => {
+                    setIsAllowingToStart(true);
+                    await allowToStartGameService(roomId, userId);
+                    setIsAllowingToStart(false);
+                }}
+                color="secondary"
+                variant="outlined">
+                Start Game
+            </Button>
+        </div>;
 
     React.useEffect(() => {
         dispatch(fetchRooms());
