@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import { ProtectedRoute, RouteWithSubRoutes } from './route-components';
 import { IRoute } from '../../models/route.model';
-import LoginPage from '../../containers/login';
+import LoginPage from '../../containers/login-page';
 import Dashboard from '../../containers/dashboard';
 
 const routes: IRoute[] = [

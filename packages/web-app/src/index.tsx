@@ -10,12 +10,10 @@ import { history } from './config/routing';
 const store = configureStore();
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <Router history={history}>
-                <App />
-            </Router>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <Router history={history}>
+            <App />
+        </Router>
+    </Provider>,
     document.getElementById('root'),
 );
