@@ -3,6 +3,7 @@ import { AppThunk } from '../../models/app-thunk.model';
 import { LoginForm } from '../../models/auth.model';
 import { logInUserService } from '../../services/auth/login.service';
 import { logoutUser, logoutUserError, logoutUserSuccess, signInUser, signInUserError, signInUserSuccess } from '../actions/auth.actions';
+import { setUser } from '../actions/user.actions';
 
 
 export const loginUser = (loginFormValues: LoginForm, redirectTo: Function): AppThunk => async dispatch => {
@@ -14,10 +15,14 @@ export const loginUser = (loginFormValues: LoginForm, redirectTo: Function): App
             return dispatch(signInUserError());
         }
 
-        const { token } = res.data;
+        const { token, user } = res.data;
 
         setAuthToken(token);
+
+
         await dispatch(signInUserSuccess({ token }));
+        await dispatch(setUser({ username: user?.username, userId: user?.id }));
+
         redirectTo('/dashboard');
     } catch (error) {
         dispatch(signInUserError());

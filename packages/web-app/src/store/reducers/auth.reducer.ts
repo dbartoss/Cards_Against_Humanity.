@@ -1,7 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { Type } from '../actions/auth.actions';
 
-
 export interface AuthState {
     token: string | null;
 }
