@@ -10,7 +10,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   dotenv.config();
 
-  const app = await NestFactory.create(AppModule, { cors: false });
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   app.use(helmet());
   // app.use(csurf()); TODO: Add XSRF protection
