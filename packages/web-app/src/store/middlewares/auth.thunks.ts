@@ -14,8 +14,10 @@ export const loginUser = (loginFormValues: LoginForm): AppThunk => async dispatc
             new Error('Missing token');
         }
 
-        setAuthToken(data.token);
-        dispatch(signInUserSuccess(data.token));
+        const { token } = data;
+
+        setAuthToken(token);
+        dispatch(signInUserSuccess({ token }));
     } catch (error) {
         dispatch(signInUserError());
         throw error;
