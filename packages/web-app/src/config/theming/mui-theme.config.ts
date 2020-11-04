@@ -1,13 +1,17 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { grey, lime } from '@material-ui/core/colors';
 
 export const muiThemeConfig = createMuiTheme({
     palette: {
+        type: 'dark',
         primary: {
-            main: grey[900],
+            main: '#ff9800',
+            light: '#00acc1',
+            dark: '#fbc02d',
         },
         secondary: {
-            main: lime[400],
+            main: '#2979ff',
+            light: '#0091ea',
+            dark: '#00b0ff',
         },
     },
 });

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import './style.css';
+import { useDispatch } from 'react-redux';
+import { useHistory, NavLink } from 'react-router-dom';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import {
     CssBaseline,
@@ -14,6 +15,12 @@ import {
     Paper,
     Button
 } from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+
+import './style.css';
+import { logout } from '../../store/middlewares/auth.thunks';
 
 const drawerWidth = 240;
 
@@ -45,11 +52,28 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
           padding: 24,
         },
+        icon: {
+            marginRight: 8,
+        },
+        navLink: {
+            textDecoration: 'none',
+            color: theme.palette.primary.main,
+        },
+        activeNavLink: {
+            backgroundColor: theme.palette.primary.light,
+            color: theme.palette.secondary.contrastText,
+        }
     }),
 );
 
 const Dashboard: React.FC = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
     const classes = useStyles();
+
+    const handleLogout = (): void => {
+        dispatch(logout(history.push));
+    };
 
     return (
         <div className={classes.root}>
@@ -60,7 +84,7 @@ const Dashboard: React.FC = () => {
                         Cards Against Humanity
                     </Typography>
                     <span className={classes.divider} />
-                    <Button variant="contained" color="secondary" onClick={() => console.log('test')}>Logout</Button>
+                    <Button variant="contained" color="secondary" onClick={handleLogout}>Log out</Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -73,12 +97,24 @@ const Dashboard: React.FC = () => {
                 <Toolbar />
                 <div className={classes.drawerContainer}>
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem button key={text}>
-                                {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                                <ListItemText primary={text} />
+                        <NavLink exact to={'/dashboard'} className={classes.navLink} activeClassName={classes.activeNavLink}>
+                            <ListItem button>
+                                <HomeIcon className={classes.icon}/>
+                                <ListItemText primary="Home" />
                             </ListItem>
-                        ))}
+                        </NavLink>
+                        <NavLink to={'/dashboard/rooms'} className={classes.navLink} activeClassName={classes.activeNavLink}>
+                                <ListItem button>
+                                <MeetingRoomIcon className={classes.icon}/>
+                                <ListItemText primary="Rooms" />
+                            </ListItem>
+                        </NavLink>
+                        <NavLink to={'/dashboard/user'} className={classes.navLink} activeClassName={classes.activeNavLink}>
+                            <ListItem button>
+                                <AccountBoxIcon className={classes.icon}/>
+                                <ListItemText primary="User" />
+                            </ListItem>
+                        </NavLink>
                     </List>
                 </div>
             </Drawer>

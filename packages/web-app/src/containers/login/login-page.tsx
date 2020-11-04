@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, Paper, Typography } from '@material-ui/core';
+import { Button, Paper, Typography, Container } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { Form, Formik, Field } from 'formik';
 
@@ -11,7 +11,7 @@ import { loginUser } from '../../store/middlewares/auth.thunks';
 
 const LOGIN_FORM_INITIAL_VALUES: Readonly<LoginForm> = Object.freeze({ username: '', password: '' });
 
-const MainPage = (props) => {
+const LoginPage = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -33,7 +33,7 @@ const MainPage = (props) => {
 
     return (
         <div className="container">
-            <Typography variant="h5">Sign in</Typography>
+            <Typography variant="h5" color="textPrimary">Sign in</Typography>
             <Paper elevation={1} className="paper">
                 <Formik initialValues={LOGIN_FORM_INITIAL_VALUES} onSubmit={submitFn}>
                     {({ submitForm, isSubmitting }) => (
@@ -41,6 +41,7 @@ const MainPage = (props) => {
                             <Field className="margin-bottom" component={TextField} name="username" type="text" label="Username"/>
                             <Field className="margin-bottom" component={TextField} name="password" type="password" label="Password"/>
                             <Button
+                                className="btn-submit"
                                 variant="contained"
                                 color="primary"
                                 type="submit"
@@ -60,4 +61,4 @@ const MainPage = (props) => {
     );
 };
 
-export default MainPage;
+export default LoginPage;

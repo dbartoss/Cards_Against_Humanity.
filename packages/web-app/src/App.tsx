@@ -5,9 +5,7 @@ import { muiThemeConfig, RoutesConfig } from './config';
 export const App = () => {
     return (
         <ThemeProvider theme={muiThemeConfig}>
-            <Container>
                 <RoutesConfig/>
-            </Container>
         </ThemeProvider>
     );
 }

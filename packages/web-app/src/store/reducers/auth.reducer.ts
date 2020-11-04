@@ -18,6 +18,9 @@ export const authReducer = handleActions<AuthState, AuthState>(
             }
             return state;
         },
+        [Type.LOGOUT_SUCCESS]: () => {
+            return initialState;
+        },
     },
     initialState
 );
