@@ -1,15 +1,18 @@
 import { handleActions } from 'redux-actions';
-import { AuthModel } from '../../models/auth.models';
-import { AuthActions } from '../actions/auth.actions';
-import { RootState } from './root.reducer';
+import { Type } from '../actions/auth.actions';
 
-const initialState: RootState.AuthState = {
+
+export interface AuthState {
+    token: string | null;
+}
+
+const initialState: AuthState = {
     token: null,
 };
 
-export const authReducer = handleActions<RootState.AuthState, AuthModel>(
+export const authReducer = handleActions<AuthState, AuthState>(
     {
-        [AuthActions.Type.SIGN_IN]: (state, action) => {
+        [Type.SIGN_IN]: (state, action) => {
             if (action?.payload?.token) {
                 return { ...state, token: action.payload.token };
             }
