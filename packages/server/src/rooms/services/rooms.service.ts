@@ -101,10 +101,10 @@ export class RoomsService {
     return this.updateRoom(roomId, { players });
   }
 
-  async getRooms(params: Partial<IRoom> = {}): Promise<IRoom[]> {
+  async getRooms(params: Partial<IRoom> = {}, selector: string = 'name players createdAt _id'): Promise<IRoom[]> {
     return this.roomModel
       .find(RoomsService.prepareParams(params))
-      .select('name players createdAt _id')
+      .select(selector)
       .exec();
   }
 

@@ -15,3 +15,6 @@ export const openRoomsSelector = (state: RootState): RoomModel[] =>
 export const currentRoom = (userId: string | null) => (state: RootState): RoomModel | null =>
     roomsItemsSelector(state).find((room: RoomModel) =>
         room.players.some((player: PlayerModel) => player.userId === userId)) ?? null;
+
+export const canRoomStartGame = (userId: string | null) => (state: RootState): boolean =>
+    currentRoom(userId)(state)?.players.every((player: PlayerModel) => !!player.ableToStartGame) ?? false;
