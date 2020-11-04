@@ -26,7 +26,7 @@ export class RoomsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getRooms(): Promise<IRoom[]> {
-    return this.roomsService.getRooms();
+    return this.roomsService.getRooms({}, '');
   }
 
   @UseGuards(JwtAuthGuard)
