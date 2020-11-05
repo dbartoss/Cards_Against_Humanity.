@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Paper, Typography, makeStyles, Theme, createStyles, CircularProgress } from '@material-ui/core';
 import BlackCard from '../../../../components/black-card';
 import WhiteCard from '../../../../components/white-card';
+import { CardModel } from '../../../../models/card.model';
 import { PlayerModel } from '../../../../models/player.model';
 import { RoomModel } from '../../../../models/room.model';
 import { UserModel } from '../../../../models/user.model';
@@ -44,6 +45,7 @@ const getPlayerName = (users: UserModel[], userId: string | null): string | null
 
 const DrawingCards: React.FC<Props> = ({ userId, activeRoom, playerData, ...props }) => {
     const [users, setUsers] = React.useState<UserModel[]>([]);
+    const [cardsToChoose, setCardsToChoose] = React.useState<CardModel[]>([]);
     const classes = useStyles();
 
     const thisRoundSelectorId: string | null = getThisRoundSelectorId(activeRoom);
