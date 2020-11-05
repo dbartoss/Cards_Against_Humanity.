@@ -7,7 +7,10 @@ import { CardModel } from '../../../../models/card.model';
 import { PlayerModel } from '../../../../models/player.model';
 import { RoomModel } from '../../../../models/room.model';
 import { UserModel } from '../../../../models/user.model';
+import { drawWhiteCardsService } from '../../../../services/cards/draw-white-cards.service';
 import { getUsers } from '../../../../services/users/users.service';
+
+const WHITE_CARDS_AMOUNT: number = 6;
 
 interface Props {
     userId: string | null;
@@ -46,6 +49,7 @@ const getPlayerName = (users: UserModel[], userId: string | null): string | null
 const DrawingCards: React.FC<Props> = ({ userId, activeRoom, playerData, ...props }) => {
     const [users, setUsers] = React.useState<UserModel[]>([]);
     const [cardsToChoose, setCardsToChoose] = React.useState<CardModel[]>([]);
+    const [doesRoundFinished, setDoesRoundFinished] = React.useState<boolean>(false);
     const classes = useStyles();
 
     const thisRoundSelectorId: string | null = getThisRoundSelectorId(activeRoom);
@@ -55,17 +59,18 @@ const DrawingCards: React.FC<Props> = ({ userId, activeRoom, playerData, ...prop
         <BlackCard text={activeRoom.currentRound.mainCardText} /> :
         <CircularProgress color="secondary" />;
 
-    const whiteCards = Array.from(Array(6)).map((_, index) => {
-        return <WhiteCard key={index} text={activeRoom.currentRound?.mainCardText ?? ''} />
-    });
+    const whiteCards = cardsToChoose.map((card: CardModel) => <WhiteCard key={card.id} text={card.text} />);
 
 
     React.useEffect(() => {
         (async () => {
-            const res = await getUsers();
-            setUsers(res?.data ?? []);
+            const usersResponse = await getUsers();
+            setUsers(usersResponse?.data ?? []);
+
+            const cardsResponse = await drawWhiteCardsService(WHITE_CARDS_AMOUNT);
+            setCardsToChoose(cardsResponse?.data ?? []);
         })();
-    }, []);
+    }, [doesRoundFinished]);
 
 
     return (
