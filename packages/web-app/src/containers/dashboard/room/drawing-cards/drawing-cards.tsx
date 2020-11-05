@@ -67,7 +67,7 @@ const DrawingCards: React.FC<Props> = ({ userId, activeRoom, playerData, ...prop
 
 
     return (
-        <Paper>
+        <React.Fragment>
             {thisRoundSelector && (
                 <div className={classes.row}>
                     <Typography className={classes.marginRight} variant="body2">This round selector:</Typography>
@@ -75,9 +75,9 @@ const DrawingCards: React.FC<Props> = ({ userId, activeRoom, playerData, ...prop
                 </div>
             )}
             {blackCard}
-            <Typography variant="h6">Answers: </Typography>
+            <Typography variant="h6">Answers:</Typography>
            <div className={classes.whiteCardsContainer}>{whiteCards}</div>
-        </Paper>
+        </React.Fragment>
     );
 };
 
